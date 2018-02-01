@@ -33,7 +33,7 @@
 
 /**
  *
- * This module is a modification of the fixed wing module and it is designed for ground rovers.
+ * This module is a modification of the fixed wing module and it is designed for USVs.
  * It has been developed starting from the fw module, simplified and improved with dedicated items.
  *
  * All the acknowledgments and credits for the fw wing app are reported in those files.
@@ -41,43 +41,43 @@
  * @author Marco Zorzi <mzorzi@student.ethz.ch>
  */
 
-#include "GroundRoverAttitudeControl.hpp"
+#include "usv_att_control_main.hpp"
 
 /**
- * GroundRover attitude control app start / stop handling function
+ * USV attitude control app start / stop handling function
  *
  * @ingroup apps
  */
-extern "C" __EXPORT int gnd_att_control_main(int argc, char *argv[]);
+extern "C" __EXPORT int usv_att_control_main(int argc, char *argv[]);
 
-namespace att_gnd_control
+namespace att_usv_control
 {
-GroundRoverAttitudeControl	*g_control = nullptr;
+USVAttitudeControl	*g_control = nullptr;
 }
 
-GroundRoverAttitudeControl::GroundRoverAttitudeControl() :
+USVAttitudeControl::USVAttitudeControl() :
 	/* performance counters */
-	_loop_perf(perf_alloc(PC_ELAPSED, "gnda_dt")),
+	_loop_perf(perf_alloc(PC_ELAPSED, "USVa_dt")),
 
-	_nonfinite_input_perf(perf_alloc(PC_COUNT, "gnda_nani")),
-	_nonfinite_output_perf(perf_alloc(PC_COUNT, "gnda_nano"))
+	_nonfinite_input_perf(perf_alloc(PC_COUNT, "USVa_nani")),
+	_nonfinite_output_perf(perf_alloc(PC_COUNT, "USVa_nano"))
 {
-	_parameter_handles.w_p = param_find("GND_WR_P");
-	_parameter_handles.w_i = param_find("GND_WR_I");
-	_parameter_handles.w_d = param_find("GND_WR_D");
-	_parameter_handles.w_imax = param_find("GND_WR_IMAX");
+	_parameter_handles.w_p = param_find("USV_WR_P");
+	_parameter_handles.w_i = param_find("USV_WR_I");
+	_parameter_handles.w_d = param_find("USV_WR_D");
+	_parameter_handles.w_imax = param_find("USV_WR_IMAX");
 
 	_parameter_handles.trim_yaw = param_find("TRIM_YAW");
 
-	_parameter_handles.man_yaw_scale = param_find("GND_MAN_Y_SC");
+	_parameter_handles.man_yaw_scale = param_find("USV_MAN_Y_SC");
 
-	_parameter_handles.bat_scale_en = param_find("GND_BAT_SCALE_EN");
+	_parameter_handles.bat_scale_en = param_find("USV_BAT_SCALE_EN");
 
 	/* fetch initial parameter values */
 	parameters_update();
 }
 
-GroundRoverAttitudeControl::~GroundRoverAttitudeControl()
+USVAttitudeControl::~USVAttitudeControl()
 {
 	if (_control_task != -1) {
 
@@ -103,11 +103,11 @@ GroundRoverAttitudeControl::~GroundRoverAttitudeControl()
 	perf_free(_nonfinite_input_perf);
 	perf_free(_nonfinite_output_perf);
 
-	att_gnd_control::g_control = nullptr;
+	att_usv_control::g_control = nullptr;
 }
 
 void
-GroundRoverAttitudeControl::parameters_update()
+USVAttitudeControl::parameters_update()
 {
 	param_get(_parameter_handles.w_p, &(_parameters.w_p));
 	param_get(_parameter_handles.w_i, &(_parameters.w_i));
@@ -130,7 +130,7 @@ GroundRoverAttitudeControl::parameters_update()
 }
 
 void
-GroundRoverAttitudeControl::vehicle_control_mode_poll()
+USVAttitudeControl::vehicle_control_mode_poll()
 {
 	bool updated = false;
 	orb_check(_vcontrol_mode_sub, &updated);
@@ -141,7 +141,7 @@ GroundRoverAttitudeControl::vehicle_control_mode_poll()
 }
 
 void
-GroundRoverAttitudeControl::manual_control_setpoint_poll()
+USVAttitudeControl::manual_control_setpoint_poll()
 {
 	bool updated = false;
 	orb_check(_manual_sub, &updated);
@@ -152,7 +152,7 @@ GroundRoverAttitudeControl::manual_control_setpoint_poll()
 }
 
 void
-GroundRoverAttitudeControl::vehicle_attitude_setpoint_poll()
+USVAttitudeControl::vehicle_attitude_setpoint_poll()
 {
 	bool updated = false;
 	orb_check(_att_sp_sub, &updated);
@@ -163,7 +163,7 @@ GroundRoverAttitudeControl::vehicle_attitude_setpoint_poll()
 }
 
 void
-GroundRoverAttitudeControl::battery_status_poll()
+USVAttitudeControl::battery_status_poll()
 {
 	/* check if there is a new message */
 	bool updated;
@@ -175,13 +175,13 @@ GroundRoverAttitudeControl::battery_status_poll()
 }
 
 void
-GroundRoverAttitudeControl::task_main_trampoline(int argc, char *argv[])
+USVAttitudeControl::task_main_trampoline(int argc, char *argv[])
 {
-	att_gnd_control::g_control->task_main();
+	att_usv_control::g_control->task_main();
 }
 
 void
-GroundRoverAttitudeControl::task_main()
+USVAttitudeControl::task_main()
 {
 	_att_sp_sub = orb_subscribe(ORB_ID(vehicle_attitude_setpoint));
 	_att_sub = orb_subscribe(ORB_ID(vehicle_attitude));
@@ -349,16 +349,16 @@ GroundRoverAttitudeControl::task_main()
 }
 
 int
-GroundRoverAttitudeControl::start()
+USVAttitudeControl::start()
 {
 	ASSERT(_control_task == -1);
 
 	/* start the task */
-	_control_task = px4_task_spawn_cmd("gnd_att_control",
+	_control_task = px4_task_spawn_cmd("usv_att_control",
 					   SCHED_DEFAULT,
 					   SCHED_PRIORITY_MAX - 5,
 					   1500,
-					   (px4_main_t)&GroundRoverAttitudeControl::task_main_trampoline,
+					   (px4_main_t)&USVAttitudeControl::task_main_trampoline,
 					   nullptr);
 
 	if (_control_task < 0) {
@@ -369,39 +369,39 @@ GroundRoverAttitudeControl::start()
 	return PX4_OK;
 }
 
-int gnd_att_control_main(int argc, char *argv[])
+int usv_att_control_main(int argc, char *argv[])
 {
 	if (argc < 2) {
-		warnx("usage: gnd_att_control {start|stop|status}");
+		warnx("usage: usv_att_control {start|stop|status}");
 		return 1;
 	}
 
 	if (!strcmp(argv[1], "start")) {
 
-		if (att_gnd_control::g_control != nullptr) {
+		if (att_usv_control::g_control != nullptr) {
 			warnx("already running");
 			return 1;
 		}
 
-		att_gnd_control::g_control = new GroundRoverAttitudeControl;
+		att_usv_control::g_control = new USVAttitudeControl;
 
-		if (att_gnd_control::g_control == nullptr) {
+		if (att_usv_control::g_control == nullptr) {
 			warnx("alloc failed");
 			return 1;
 		}
 
-		if (PX4_OK != att_gnd_control::g_control->start()) {
-			delete att_gnd_control::g_control;
-			att_gnd_control::g_control = nullptr;
+		if (PX4_OK != att_usv_control::g_control->start()) {
+			delete att_usv_control::g_control;
+			att_usv_control::g_control = nullptr;
 			warn("start failed");
 			return 1;
 		}
 
 		/* check if the waiting is necessary at all */
-		if (att_gnd_control::g_control == nullptr || !att_gnd_control::g_control->task_running()) {
+		if (att_usv_control::g_control == nullptr || !att_usv_control::g_control->task_running()) {
 
 			/* avoid memory fragmentation by not exiting start handler until the task has fully started */
-			while (att_gnd_control::g_control == nullptr || !att_gnd_control::g_control->task_running()) {
+			while (att_usv_control::g_control == nullptr || !att_usv_control::g_control->task_running()) {
 				usleep(50000);
 				printf(".");
 				fflush(stdout);
@@ -414,18 +414,18 @@ int gnd_att_control_main(int argc, char *argv[])
 	}
 
 	if (!strcmp(argv[1], "stop")) {
-		if (att_gnd_control::g_control == nullptr) {
+		if (att_usv_control::g_control == nullptr) {
 			warnx("not running");
 			return 1;
 		}
 
-		delete att_gnd_control::g_control;
-		att_gnd_control::g_control = nullptr;
+		delete att_usv_control::g_control;
+		att_usv_control::g_control = nullptr;
 		return 0;
 	}
 
 	if (!strcmp(argv[1], "status")) {
-		if (att_gnd_control::g_control) {
+		if (att_usv_control::g_control) {
 			warnx("running");
 			return 0;
 

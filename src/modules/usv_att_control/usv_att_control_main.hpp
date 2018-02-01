@@ -33,7 +33,7 @@
 
 /**
  *
- * This module is a modification of the fixed wing module and it is designed for ground rovers.
+ * This module is a modification of the fixed wing module and it is designed for USV.
  * It has been developed starting from the fw module, simplified and improved with dedicated items.
  *
  * All the acknowledgments and credits for the fw wing app are reported in those files.
@@ -64,11 +64,11 @@
 using matrix::Eulerf;
 using matrix::Quatf;
 
-class GroundRoverAttitudeControl
+class USVAttitudeControl
 {
 public:
-	GroundRoverAttitudeControl();
-	~GroundRoverAttitudeControl();
+	USVAttitudeControl();
+	~USVrAttitudeControl();
 
 	int start();
 	bool task_running() { return _task_running; }

@@ -32,7 +32,7 @@
  ****************************************************************************/
 
 /**
- * @file gnd_att_control_params.c
+ * @file USV_att_control_params.c
  *
  * Parameters defined by the attitude control task for ground rovers
  *
@@ -65,7 +65,7 @@
  * @increment 0.05
  * @group FW Attitude Control
  */
-PARAM_DEFINE_FLOAT(GND_WR_TC, 0.4f);
+PARAM_DEFINE_FLOAT(USV_WR_TC, 0.4f);
 
 /**
  * Wheel steering rate proportional gain
@@ -78,9 +78,9 @@ PARAM_DEFINE_FLOAT(GND_WR_TC, 0.4f);
  * @max 1.0
  * @decimal 3
  * @increment 0.005
- * @group GND Attitude Control
+ * @group USV Attitude Control
  */
-PARAM_DEFINE_FLOAT(GND_WR_P, 1.0f);
+PARAM_DEFINE_FLOAT(USV_WR_P, 1.0f);
 
 /**
  * Wheel steering rate integrator gain
@@ -93,9 +93,9 @@ PARAM_DEFINE_FLOAT(GND_WR_P, 1.0f);
  * @max 0.5
  * @decimal 3
  * @increment 0.005
- * @group GND Attitude Control
+ * @group USV Attitude Control
  */
-PARAM_DEFINE_FLOAT(GND_WR_I, 0.00f);
+PARAM_DEFINE_FLOAT(USV_WR_I, 0.00f);
 
 /**
  * Wheel steering rate integrator gain
@@ -106,9 +106,9 @@ PARAM_DEFINE_FLOAT(GND_WR_I, 0.00f);
  * @max 30
  * @decimal 3
  * @increment 0.005
- * @group GND Attitude Control
+ * @group USV Attitude Control
  */
-PARAM_DEFINE_FLOAT(GND_WR_D, 0.00f);
+PARAM_DEFINE_FLOAT(USV_WR_D, 0.00f);
 
 /**
  * Wheel steering rate integrator limit
@@ -120,9 +120,9 @@ PARAM_DEFINE_FLOAT(GND_WR_D, 0.00f);
  * @max 1.0
  * @decimal 2
  * @increment 0.05
- * @group GND Attitude Control
+ * @group USV Attitude Control
  */
-PARAM_DEFINE_FLOAT(GND_WR_IMAX, 0.0f);
+PARAM_DEFINE_FLOAT(USV_WR_IMAX, 0.0f);
 
 /**
  * Maximum wheel steering rate
@@ -135,9 +135,9 @@ PARAM_DEFINE_FLOAT(GND_WR_IMAX, 0.0f);
  * @max 90.0
  * @decimal 1
  * @increment 0.5
- * @group GND Attitude Control
+ * @group USV Attitude Control
  */
-PARAM_DEFINE_FLOAT(GND_W_RMAX, 90.0f);
+PARAM_DEFINE_FLOAT(USV_W_RMAX, 90.0f);
 
 /**
  * Wheel steering rate feed forward
@@ -149,9 +149,9 @@ PARAM_DEFINE_FLOAT(GND_W_RMAX, 90.0f);
  * @max 10.0
  * @decimal 2
  * @increment 0.05
- * @group GND Attitude Control
+ * @group USV Attitude Control
  */
-PARAM_DEFINE_FLOAT(GND_WR_FF, 0.0f);
+PARAM_DEFINE_FLOAT(USV_WR_FF, 0.0f);
 
 /**
  * Manual yaw scale
@@ -163,9 +163,9 @@ PARAM_DEFINE_FLOAT(GND_WR_FF, 0.0f);
  * @min 0.0
  * @decimal 2
  * @increment 0.01
- * @group GND Attitude Control
+ * @group USV Attitude Control
  */
-PARAM_DEFINE_FLOAT(GND_MAN_Y_SC, 1.0f);
+PARAM_DEFINE_FLOAT(USV_MAN_Y_SC, 1.0f);
 
 /**
  * Groundspeed speed trim
@@ -176,9 +176,9 @@ PARAM_DEFINE_FLOAT(GND_MAN_Y_SC, 1.0f);
  * @min 0.0
  * @decimal 2
  * @increment 0.1
- * @group GND Attitude Control
+ * @group USV Attitude Control
  */
-PARAM_DEFINE_FLOAT(GND_GSPD_SP_TRIM, 1.0f);
+PARAM_DEFINE_FLOAT(USV_GSPD_SP_TRIM, 1.0f);
 
 /**
  * Whether to scale throttle by battery power level
@@ -190,6 +190,6 @@ PARAM_DEFINE_FLOAT(GND_GSPD_SP_TRIM, 1.0f);
  * it will still be 0.5 at 60% battery.
  *
  * @boolean
- * @group GND Attitude Control
+ * @group USV Attitude Control
  */
-PARAM_DEFINE_INT32(GND_BAT_SCALE_EN, 0);
+PARAM_DEFINE_INT32(USV_BAT_SCALE_EN, 0);
