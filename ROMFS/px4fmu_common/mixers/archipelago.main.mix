@@ -1,0 +1,39 @@
+DIfferential Thrust Catamaran mixer for PX4FMU
+===========================
+
+ArchipelaGO
+**NOT YET TESTED.STILL NEED TO UNDERSTAND RELATION BETWEEN MIXER AND PWM OUTPUT
+
+This file defines mixers for controlling a differential thrust catamaran. 
+
+Servo Output 0 connected to Motor 0
+Servo Output 1 connected to Motor 1
+
+A positive thrust for Motor 0 should contribute to a negative angular velocity about the yaw axis (catamaran turns clockwise)
+
+A positive thrust for Motor 1 should contribute to a positive angular velocity about the yaw axis (catamaran turns counterclockwise)
+
+Inputs to the mixer come from channel group 0 (vehicle attitude), channels 2 (yaw) and 3 (thrust) both are -1 to 1.
+
+See the README for more information on the scaler format.
+
+Thruster mixers
+-------------
+
+Motor 0
+
+M: 2
+O:      10000  10000      0 -10000  10000
+S: 0 2  -10000  -10000    0 -10000  10000
+S: 0 3  10000  10000      0 -10000  10000
+
+
+Motor 1
+
+M: 2
+O:      10000  10000      0 -10000  10000
+S: 0 2  10000  10000      0 -10000  10000
+S: 0 3  10000  10000      0 -10000  10000
+
+
+
