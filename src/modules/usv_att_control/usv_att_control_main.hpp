@@ -68,7 +68,7 @@ class USVAttitudeControl
 {
 public:
 	USVAttitudeControl();
-	~USVrAttitudeControl();
+	~USVAttitudeControl();
 
 	int start();
 	bool task_running() { return _task_running; }
