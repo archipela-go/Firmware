@@ -1,0 +1,32 @@
+#!nsh
+#
+# @name Archipelago
+#
+#
+# @type Surface Boat
+# @class Boat
+#
+# @output MAIN1 left thruster
+# @output MAIN2 right thruster
+# @maintainer Shreetej Reddy<reddyshr@sas.upenn.edu>
+#
+
+
+sh /etc/init.d/rc.ugv_defaults
+
+if [ $AUTOCNF == yes ]
+then
+
+fi
+
+# Configure this as surface boat
+set MAV_TYPE 11
+
+# Set mixer
+set MIXER archipelago
+
+# Provide ESC a constant 1500 us pulse
+set PWM_DISARMED 1500
+set PWM_OUT 1234
+set PWM_MAX 2000
+set PWM_MIN 1000

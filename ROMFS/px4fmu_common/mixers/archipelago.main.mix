@@ -2,7 +2,7 @@ DIfferential Thrust Catamaran mixer for PX4FMU
 ===========================
 
 ArchipelaGO
-**NOT YET TESTED.STILL NEED TO UNDERSTAND RELATION BETWEEN MIXER AND PWM OUTPUT
+**TESTING CURRENTLY IN PROCESS. ONLY ISSUE SEEMS TO BE GETTING BIDIRECTIONAL THRUST WITH JOYSTICK THROTTLE
 
 This file defines mixers for controlling a differential thrust catamaran. 
 
