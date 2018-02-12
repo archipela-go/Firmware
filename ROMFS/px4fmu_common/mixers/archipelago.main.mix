@@ -2,7 +2,18 @@ DIfferential Thrust Catamaran mixer for PX4FMU
 ===========================
 
 ArchipelaGO
-**TESTING CURRENTLY IN PROCESS. ONLY ISSUE SEEMS TO BE GETTING BIDIRECTIONAL THRUST WITH JOYSTICK THROTTLE
+
+***IMPORTANT NOTES***
+
+  - Actuator Control Group 0
+    - Yaw Range :-1 to 1
+    - Thrust Range: 0 to 1 (<0.5 is reverse thrust)
+
+  - To be used with modified joystick that is at 0.5 thrust input in rest position.
+
+  - Maintainer: Shreetej Reddy (reddyshr@sas.upenn.edu)
+
+*********************
 
 This file defines mixers for controlling a differential thrust catamaran. 
 
@@ -13,7 +24,7 @@ A positive thrust for Motor 0 should contribute to a negative angular velocity a
 
 A positive thrust for Motor 1 should contribute to a positive angular velocity about the yaw axis (catamaran turns counterclockwise)
 
-Inputs to the mixer come from channel group 0 (vehicle attitude), channels 2 (yaw) and 3 (thrust) both are -1 to 1.
+Inputs to the mixer come from channel group 0 (vehicle attitude). Channel 2 (yaw) inputs are -1 to 1, with 0 being no yaw contribution. Channel 3 (thrust) inputs are 0 to 1, with <0.5 being reverse thrust and >0.5 being forward thrust.
 
 See the README for more information on the scaler format.
 
@@ -23,17 +34,17 @@ Thruster mixers
 Motor 0
 
 M: 2
-O:      10000  10000      0 -10000  10000
-S: 0 2  -10000  -10000    0 -10000  10000
-S: 0 3  10000  10000      0 -10000  10000
+O:      10000  10000     0      -10000  10000
+S: 0 2  -10000 -10000    0      -10000  10000
+S: 0 3  0      20000     -10000 -10000  10000
 
 
 Motor 1
 
 M: 2
-O:      10000  10000      0 -10000  10000
-S: 0 2  10000  10000      0 -10000  10000
-S: 0 3  10000  10000      0 -10000  10000
+O:      10000  10000      0      -10000  10000
+S: 0 2  10000  10000      0      -10000  10000
+S: 0 3  0      20000      -10000 -10000  10000
 
 
 

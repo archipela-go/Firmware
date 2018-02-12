@@ -40,7 +40,13 @@
 
 #include <px4_log.h>
 #include <px4_config.h>
+#include <px4_tasks.h>
 #include <px4_posix.h>
+#include <unistd.h>
+#include <stdio.h>
+#include <string.h>
+#include <math.h>
+
 
 #include <poll.h>
 #include <uORB/uORB.h>
@@ -57,6 +63,11 @@ int px4_practice_app_main(int argc, char *argv[])
 
     int actuator_sub_fd = orb_subscribe(ORB_ID(actuator_controls_0));
     orb_set_interval(actuator_sub_fd, 200);
+
+    /* advertise to actuator_control topic */
+	/*struct actuator_controls_s act;
+	memset(&act, 0, sizeof(act));
+	orb_advert_t act_pub = orb_advertise(ORB_ID(actuator_controls_0), &act);*/
 
     px4_pollfd_struct_t fds[] = {
 		//{ .fd = sensor_sub_fd,   .events = POLLIN },
@@ -94,11 +105,18 @@ int px4_practice_app_main(int argc, char *argv[])
 					 (double)raw.accelerometer_m_s2[0],
 					 (double)raw.accelerometer_m_s2[1],
 					 (double)raw.accelerometer_m_s2[2]);*/
-				struct actuator_controls_s act;
-				orb_copy(ORB_ID(actuator_controls_0), actuator_sub_fd, &act);
+				// Give actuator input to the HippoC, this will result in a circle
+				/*act.control[0] = 0.0f;      // roll
+				act.control[1] = 0.0f;      // pitch
+				act.control[2] = 0.0f;		// yaw
+				act.control[3] = 0.2f;		// thrust
+				orb_publish(ORB_ID(actuator_controls_0), act_pub, &act);*/
+
+				struct actuator_controls_s act_sub;
+				orb_copy(ORB_ID(actuator_controls_0), actuator_sub_fd, &act_sub);
 				PX4_INFO("YAW and THRUST:\t%8.4f\t%8.4f",
-					 (double)act.control[2],
-					 (double)act.control[3]);
+					 (double)act_sub.control[2],
+					 (double)act_sub.control[3]);
 
 			}
 
